@@ -16,8 +16,8 @@
 		<c:if test="${not empty errorMessages }">
 			<div class="errorMessages">
 				<ul>
-					<c:forEach items="${errorMessages }" var="errorMessage">
-						<li><c:out value="errorMessage" />
+					<c:forEach items="${ errorMessages }" var="errorMessage">
+						<li><c:out value="${ errorMessage }" />
 					</c:forEach>
 				</ul>
 			</div>
