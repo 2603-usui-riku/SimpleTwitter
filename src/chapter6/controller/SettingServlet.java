@@ -91,16 +91,12 @@ public class SettingServlet extends HttpServlet {
 		user.setId(Integer.parseInt(request.getParameter("id")));
 		user.setName(request.getParameter("name"));
 		user.setAccount(request.getParameter("account"));
-
-		// リクエストにパスワードが含まれている場合のみパラメータにセットする
-		if (!StringUtils.isBlank(request.getParameter("password")))
-			user.setPassword(request.getParameter("password"));
+		user.setPassword(request.getParameter("password"));
 		user.setEmail(request.getParameter("email"));
 		user.setDescription(request.getParameter("description"));
 		return user;
 	}
 
-	// パスワードのバリデーションは後に使用する可能性があるため、コメントアウト対応
 	private boolean isValid(User user, List<String> errorMessages) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
@@ -108,7 +104,6 @@ public class SettingServlet extends HttpServlet {
 
 		String name = user.getName();
 		String account = user.getAccount();
-		// String password = user.getPassword();
 		String email = user.getEmail();
 
 		if (!StringUtils.isEmpty(name) && (20 < name.length())) {
@@ -119,9 +114,6 @@ public class SettingServlet extends HttpServlet {
 		} else if (20 < account.length()) {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
 		}
-		// if (StringUtils.isEmpty(password)) {
-		// 	errorMessages.add("パスワードを入力してください");
-		// }
 		if (StringUtils.isEmpty(email)) {
 			errorMessages.add("メールアドレスを入力してください");
 		} else if (!StringUtils.isEmpty(email) && (50 < email.length())) {
