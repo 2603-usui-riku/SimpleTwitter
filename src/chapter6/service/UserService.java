@@ -121,6 +121,34 @@ public class UserService {
 		}
 	}
 
+	/*
+	 * String型の引数をもつ、isAccountExistsメソッドを追加する
+	 */
+	public boolean isAccountExists(String account) {
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			User user = new UserDao().select(connection, account);
+			commit(connection);
+
+			if (user != null) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (RuntimeException e) {
+			rollback(connection);
+
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
+
 	public void update(User user) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
@@ -129,7 +157,7 @@ public class UserService {
 		Connection connection = null;
 		try {
 			// 新しいパスワードが設定されている場合は、パスワードを暗号化
-			if (!StringUtils.isBlank(user.getPassword())){
+			if (!StringUtils.isBlank(user.getPassword())) {
 				String encPassword = CipherUtil.encrypt(user.getPassword());
 				user.setPassword(encPassword);
 			}
