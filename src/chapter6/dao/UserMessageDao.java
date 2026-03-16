@@ -32,7 +32,7 @@ public class UserMessageDao {
 
 	}
 
-	public List<UserMessage> select(Connection connection, int num) {
+	public List<UserMessage> select(Connection connection, Integer id, int LIMIT_NUM) {
 
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
@@ -51,7 +51,10 @@ public class UserMessageDao {
 			sql.append("FROM messages ");
 			sql.append("INNER JOIN users ");
 			sql.append("ON messages.user_id = users.id ");
-			sql.append("ORDER BY created_date DESC limit " + num);
+			if(id != null) {
+				sql.append("WHERE messages.user_id = " + id);
+			}
+			sql.append(" ORDER BY created_date DESC limit " + LIMIT_NUM);
 
 			ps = connection.prepareStatement(sql.toString());
 

@@ -68,7 +68,11 @@
 			<c:forEach items="${messages}" var="message">
 				<div class="message">
 					<div class="account-name">
-						<span class="account"><c:out value="${message.account}" /></span>
+						<span class="account">
+							<a href="./?user_id=<c:out value="${message.userId }"/>">
+								<c:out value="${message.account}" />
+							</a>
+						</span>
 						<span class="name"><c:out value="${message.name}" /></span>
 					</div>
 					<div class="text">
@@ -81,6 +85,7 @@
 				</div>
 			</c:forEach>
 		</div>
+
 		<div class="copyright">Copyright(c)YourName</div>
 	</div>
 </body>
