@@ -126,7 +126,7 @@ public class UserService {
 
 		Connection connection = null;
 		try {
-			// パスワード暗号化
+			// 新しいパスワードが設定されている場合は、パスワードを暗号化
 			if (user.getPassword() != null) {
 				String encPassword = CipherUtil.encrypt(user.getPassword());
 				user.setPassword(encPassword);

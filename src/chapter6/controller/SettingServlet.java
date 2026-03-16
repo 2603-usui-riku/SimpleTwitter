@@ -91,6 +91,8 @@ public class SettingServlet extends HttpServlet {
 		user.setId(Integer.parseInt(request.getParameter("id")));
 		user.setName(request.getParameter("name"));
 		user.setAccount(request.getParameter("account"));
+
+		// リクエストにパスワードが含まれている場合のみパラメータにセットする
 		if (!StringUtils.isBlank(request.getParameter("password")))
 			user.setPassword(request.getParameter("password"));
 		user.setEmail(request.getParameter("email"));
@@ -98,6 +100,7 @@ public class SettingServlet extends HttpServlet {
 		return user;
 	}
 
+	// パスワードのバリデーションは後に使用する可能性があるため、コメントアウト対応
 	private boolean isValid(User user, List<String> errorMessages) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
