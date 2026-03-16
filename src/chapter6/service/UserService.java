@@ -122,31 +122,28 @@ public class UserService {
 	}
 
 	/*
-	 * String型の引数をもつ、isAccountExistsメソッドを追加する
+	 * String型の引数をもつ、selectメソッドを追加する
 	 */
-	public boolean isAccountExists(String account) {
-		Connection connection = null;
-		try {
-			connection = getConnection();
-			User user = new UserDao().select(connection, account);
-			commit(connection);
+	public User select(String account) {
 
-			if (user != null) {
-				return true;
-			} else {
-				return false;
-			}
-		} catch (RuntimeException e) {
-			rollback(connection);
+	    Connection connection = null;
+	    try {
+	        connection = getConnection();
+	        User user = new UserDao().select(connection, account);
+	        commit(connection);
 
-			throw e;
-		} catch (Error e) {
-			rollback(connection);
+	        return user;
+	    } catch (RuntimeException e) {
+	        rollback(connection);
 
-			throw e;
-		} finally {
-			close(connection);
-		}
+	        throw e;
+	    } catch (Error e) {
+	        rollback(connection);
+
+	        throw e;
+	    } finally {
+	        close(connection);
+	    }
 	}
 
 	public void update(User user) {

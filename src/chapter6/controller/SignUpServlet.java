@@ -87,7 +87,7 @@ public class SignUpServlet extends HttpServlet {
 
 		String name = user.getName();
 		String account = user.getAccount();
-		boolean isAccountExists = new UserService().isAccountExists(user.getAccount());
+		User registeredUser = new UserService().select(user.getAccount());
 		String password = user.getPassword();
 		String email = user.getEmail();
 
@@ -99,7 +99,7 @@ public class SignUpServlet extends HttpServlet {
 			errorMessages.add("アカウント名を入力してください");
 		} else if (20 < account.length()) {
 			errorMessages.add("アカウント名は20文字以下で入力してください");
-		} else if (isAccountExists) {
+		} else if (registeredUser != null) {
 			errorMessages.add("すでに存在しているアカウントです");
 		}
 
