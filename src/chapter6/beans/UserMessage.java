@@ -10,6 +10,8 @@ public class UserMessage implements Serializable {
 	private int userId;
 	private String text;
 	private Date createdDate;
+	//DBに保存しない、編集の可否を判断する変数
+	private boolean editable;
 
 	// id
 	public int getId() {
@@ -63,5 +65,15 @@ public class UserMessage implements Serializable {
 
 	public void setCreatedDate(Date createdDate) {
 		this.createdDate = createdDate;
+	}
+
+
+	// editable
+	public boolean isEditable() {
+		return editable;
+	}
+
+	public void setEditable(boolean editable) {
+		this.editable = editable;
 	}
 }

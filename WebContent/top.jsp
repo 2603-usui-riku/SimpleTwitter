@@ -30,15 +30,15 @@
 			<div class="profile">
 				<div class="name">
 					<h2>
-						<c:out value="${loginUser.name}" />
+						<c:out value="${ loginUser.name }" />
 					</h2>
 				</div>
 				<div class="account">
 					@
-					<c:out value="${loginUser.account}" />
+					<c:out value="${ loginUser.account }" />
 				</div>
 				<div class="description">
-					<c:out value="${loginUser.description}" />
+					<c:out value="${ loginUser.description }" />
 				</div>
 			</div>
 		</c:if>
@@ -46,8 +46,8 @@
 		<c:if test="${ not empty errorMessages }">
 			<div class="errorMessages">
 				<ul>
-					<c:forEach items="${errorMessages}" var="errorMessage">
-						<li><c:out value="${errorMessage}" />
+					<c:forEach items="${ errorMessages }" var="errorMessage">
+						<li><c:out value="${ errorMessage }" />
 					</c:forEach>
 				</ul>
 			</div>
@@ -65,23 +65,32 @@
 		</div>
 
 		<div class="messages">
-			<c:forEach items="${messages}" var="message">
+			<c:forEach items="${ messages }" var="message">
 				<div class="message">
 					<div class="account-name">
-						<span class="account">
-							<a href="./?user_id=<c:out value="${message.userId }"/>">
-								<c:out value="${message.account}" />
-							</a>
-						</span>
-						<span class="name"><c:out value="${message.name}" /></span>
+						<span class="account"> <a
+							href="./?user_id=<c:out value="${ message.userId }"/>"> <c:out
+									value="${ message.account }" /></a>
+						</span> <span class="name"><c:out value="${ message.name }" /></span>
 					</div>
+
 					<div class="text">
-						<c:out value="${message.text}" />
+						<c:out value="${ message.text }" />
 					</div>
+
 					<div class="date">
-						<fmt:formatDate value="${message.createdDate}"
+						<fmt:formatDate value="${ message.createdDate }"
 							pattern="yyyy/MM/dd HH:mm:ss" />
 					</div>
+
+					<c:if test="${ message.editable }">
+						<div class="btns">
+							<form action="./deleteMessage" method="post">
+								<input type="hidden" name="message_id" value="${ message.id }" />
+								<button type="submit">削除</button>
+							</form>
+						</div>
+					</c:if>
 				</div>
 			</c:forEach>
 		</div>

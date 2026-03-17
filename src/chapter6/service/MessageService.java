@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import org.apache.commons.lang.StringUtils;
 
 import chapter6.beans.Message;
+import chapter6.beans.User;
 import chapter6.beans.UserMessage;
 import chapter6.dao.MessageDao;
 import chapter6.dao.UserMessageDao;
@@ -62,7 +63,7 @@ public class MessageService {
 	/*
 	* selectの引数にString型のuserIdを追加
 	*/
-	public List<UserMessage> select(String userId) {
+	public List<UserMessage> select(String userId, User user) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
 		}.getClass().getEnclosingMethod().getName());
@@ -89,6 +90,13 @@ public class MessageService {
 			 */
 			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM);
 			commit(connection);
+			if (user != null) {
+				for (UserMessage m : messages) {
+					if (user.getId() == m.getUserId()) {
+						m.setEditable(true);
+					}
+				}
+			}
 
 			return messages;
 		} catch (RuntimeException e) {
@@ -108,4 +116,30 @@ public class MessageService {
 		}
 	}
 
+	public void delete(int id) {
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
+		}.getClass().getEnclosingMethod().getName());
+
+		Connection connection = null;
+		try {
+			connection = getConnection();
+			new MessageDao().delete(connection, id);
+			commit(connection);
+		} catch (RuntimeException e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+
+			throw e;
+		} catch (Error e) {
+			rollback(connection);
+			log.log(Level.SEVERE, new Object() {
+			}.getClass().getEnclosingClass().getName() + " : " + e.toString(), e);
+
+			throw e;
+		} finally {
+			close(connection);
+		}
+	}
 }
