@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import chapter6.beans.User;
 import chapter6.beans.UserMessage;
@@ -41,9 +42,13 @@ public class TopServlet extends HttpServlet {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
 		}.getClass().getEnclosingMethod().getName());
 
+		HttpSession session = request.getSession();
+		@SuppressWarnings("unchecked")
+		List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
+
 		boolean isShowMessageForm = false;
 		User user = (User) request.getSession().getAttribute("loginUser");
-		if(user!= null) {
+		if (user != null) {
 			isShowMessageForm = true;
 		}
 
@@ -55,8 +60,12 @@ public class TopServlet extends HttpServlet {
 		String userId = request.getParameter("user_id");
 		List<UserMessage> messages = new MessageService().select(userId, user);
 
-		request.setAttribute("messages", messages);
+		request.setAttribute("errorMessages", errorMessages);
+		session.removeAttribute("errorMessages");
+
 		request.setAttribute("isShowMessageForm", isShowMessageForm);
+		request.setAttribute("messages", messages);
+		request.setAttribute("errorMessages", errorMessages);
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}
 }

@@ -10,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -41,11 +42,43 @@ public class EditServlet extends HttpServlet {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
 		}.getClass().getEnclosingMethod().getName());
 
+		HttpSession session = request.getSession();
+		List<String> errorMessages = new ArrayList<String>();
+
 		String msgId = request.getParameter("message_id");
-		Message message = new MessageService().select(msgId);
+		Message message = null;
+		if(isValidUrl(msgId, errorMessages)) {
+			message = new MessageService().select(msgId);
+		}
+
+		if (errorMessages.size() != 0) {
+			session.setAttribute("errorMessages", errorMessages);
+			response.sendRedirect("./");
+			return;
+		}
 
 		request.setAttribute("message", message);
 		request.getRequestDispatcher("edit.jsp").forward(request, response);
+	}
+
+	private boolean isValidUrl(String msgId, List<String> errorMessages) {
+		log.info(new Object() {
+		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
+		}.getClass().getEnclosingMethod().getName());
+
+		if (StringUtils.isBlank(msgId)) {
+			errorMessages.add("不正なパラメータが入力されました");
+		} else if (!msgId.matches("^[0-9]+$")) {
+			System.out.println("DEBUG: msgIdの値は [" + msgId + "] で、長さは " + (msgId != null ? msgId.length() : "null") + " です。");
+			errorMessages.add("不正なパラメータが入力されました");
+		} else if (new MessageService().select(msgId) == null) {
+			errorMessages.add("不正なパラメータが入力されました");
+		}
+
+		if (errorMessages.size() != 0) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
