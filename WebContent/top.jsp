@@ -85,9 +85,17 @@
 
 					<c:if test="${ message.editable }">
 						<div class="btns">
-							<form action="./deleteMessage" method="post">
+							<form action="edit" method="get">
 								<input type="hidden" name="message_id" value="${ message.id }" />
-								<button type="submit">削除</button>
+								<button class="edit-btn" type="submit">編集</button>
+							</form>
+							<%--
+							<button class="edit-btn" onclick="location.href='./edit?message_id=${ message.id }'">編集</button>
+							--%>
+
+							<form action="deleteMessage" method="post">
+								<input type="hidden" name="message_id" value="${ message.id }" />
+								<button class="delete-btn" type="submit">削除</button>
 							</form>
 						</div>
 					</c:if>
