@@ -75,7 +75,7 @@
 					</div>
 
 					<div class="text">
-						<c:out value="${ message.text }" />
+						<pre><c:out value="${ message.text }" /></pre>
 					</div>
 
 					<div class="date">
