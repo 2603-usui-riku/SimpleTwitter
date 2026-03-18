@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -49,15 +50,21 @@ public class UserMessageDao {
 			sql.append("FROM messages ");
 			sql.append("INNER JOIN users ");
 			sql.append("ON messages.user_id = users.id ");
+			sql.append("WHERE messages.created_date BETWEEN ? AND ? ");
 			if (id != null) {
-				sql.append("WHERE messages.user_id = ? ");
+				sql.append("AND messages.user_id = ? ");
 			}
 			sql.append("ORDER BY created_date DESC limit " + LIMIT_NUM);
 
 			ps = connection.prepareStatement(sql.toString());
 
+			Timestamp start = Timestamp.valueOf("2020-01-01 00:00:00.0");
+			Timestamp end = new Timestamp(System.currentTimeMillis());
+
+			ps.setTimestamp(1, start);
+			ps.setTimestamp(2, end);
 			if (id != null) {
-				ps.setInt(1, id);
+				ps.setInt(3, id);
 			}
 
 			ResultSet rs = ps.executeQuery();
