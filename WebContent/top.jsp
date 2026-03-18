@@ -26,6 +26,14 @@
 			</c:if>
 		</div>
 
+		<div class="date-filter">
+			<form action="./" action="get">
+				<span>
+					日付　 <input type="date" name="start"/> ～ <input type="date" name="end"/>　<input type="submit" value="絞込"/>
+				</span>
+			</form>
+		</div>
+
 		<c:if test="${ not empty loginUser }">
 			<div class="profile">
 				<div class="name">

@@ -95,7 +95,7 @@ public class MessageService {
 	/*
 	* selectの引数にString型のuserIdを追加
 	*/
-	public List<UserMessage> select(String userId, User user) {
+	public List<UserMessage> select(String userId, String start, String end, User user) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
 		}.getClass().getEnclosingMethod().getName());
@@ -115,15 +115,26 @@ public class MessageService {
 				id = Integer.parseInt(userId);
 			}
 
-			Timestamp start = Timestamp.valueOf("2020-01-01 00:00:00.0");
-			Timestamp end = new Timestamp(System.currentTimeMillis());
+			Timestamp startTime = null;
+			if (!StringUtils.isEmpty(start)) {
+				startTime = Timestamp.valueOf(start + " 00:00:00");
+			} else {
+				startTime = Timestamp.valueOf("2020-01-01 00:00:00");
+			}
+
+			Timestamp endTime = null;
+			if (!StringUtils.isEmpty(end)) {
+				endTime = Timestamp.valueOf(end + " 23:59:59");
+			} else {
+				endTime = new Timestamp(System.currentTimeMillis());
+			}
 
 			/*
 			 * messageDao.selectに引数としてInteger型のidを追加
 			 * idがnullだったら全件取得する
 			 * idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
 			 */
-			List<UserMessage> messages = new UserMessageDao().select(connection, id, start, end, LIMIT_NUM);
+			List<UserMessage> messages = new UserMessageDao().select(connection, id, startTime, endTime, LIMIT_NUM);
 			commit(connection);
 
 			if (user != null) {
