@@ -4,6 +4,7 @@ import static chapter6.utils.CloseableUtil.*;
 import static chapter6.utils.DBUtil.*;
 
 import java.sql.Connection;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -114,12 +115,15 @@ public class MessageService {
 				id = Integer.parseInt(userId);
 			}
 
+			Timestamp start = Timestamp.valueOf("2020-01-01 00:00:00.0");
+			Timestamp end = new Timestamp(System.currentTimeMillis());
+
 			/*
 			 * messageDao.selectに引数としてInteger型のidを追加
 			 * idがnullだったら全件取得する
 			 * idがnull以外だったら、その値に対応するユーザーIDの投稿を取得する
 			 */
-			List<UserMessage> messages = new UserMessageDao().select(connection, id, LIMIT_NUM);
+			List<UserMessage> messages = new UserMessageDao().select(connection, id, start, end, LIMIT_NUM);
 			commit(connection);
 
 			if (user != null) {

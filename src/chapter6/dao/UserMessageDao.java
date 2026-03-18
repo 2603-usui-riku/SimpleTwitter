@@ -32,7 +32,7 @@ public class UserMessageDao {
 
 	}
 
-	public List<UserMessage> select(Connection connection, Integer id, int LIMIT_NUM) {
+	public List<UserMessage> select(Connection connection, Integer id, Timestamp start, Timestamp end, int LIMIT_NUM) {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
 		}.getClass().getEnclosingMethod().getName());
@@ -57,9 +57,6 @@ public class UserMessageDao {
 			sql.append("ORDER BY created_date DESC limit " + LIMIT_NUM);
 
 			ps = connection.prepareStatement(sql.toString());
-
-			Timestamp start = Timestamp.valueOf("2020-01-01 00:00:00.0");
-			Timestamp end = new Timestamp(System.currentTimeMillis());
 
 			ps.setTimestamp(1, start);
 			ps.setTimestamp(2, end);
