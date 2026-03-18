@@ -30,7 +30,6 @@ public class LoginServlet extends HttpServlet {
 	public LoginServlet() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
-
 	}
 
 	@Override
@@ -39,7 +38,17 @@ public class LoginServlet extends HttpServlet {
 		log.info(new Object() {
 		}.getClass().getEnclosingClass().getName() + " : " + new Object() {
 		}.getClass().getEnclosingMethod().getName());
+		HttpSession session = request.getSession();
 
+		String loginErrorMessage = (String) session.getAttribute("loginErrorMessage");
+		List<String> errorMessages = new ArrayList<String>();
+
+		if (loginErrorMessage != null) {
+			errorMessages.add(loginErrorMessage);
+		}
+		session.removeAttribute("loginErrorMessage");
+
+		request.setAttribute("errorMessages", errorMessages);
 		request.getRequestDispatcher("login.jsp").forward(request, response);
 	}
 

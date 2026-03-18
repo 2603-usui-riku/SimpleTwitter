@@ -48,7 +48,7 @@ public class TopServlet extends HttpServlet {
 		List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
 
 		boolean isLoggedIn = false;
-		User user = (User) request.getSession().getAttribute("loginUser");
+		User user = (User) session.getAttribute("loginUser");
 		if (user != null) {
 			isLoggedIn = true;
 		}
