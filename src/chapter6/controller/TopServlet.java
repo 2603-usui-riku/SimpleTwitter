@@ -67,6 +67,8 @@ public class TopServlet extends HttpServlet {
 		request.setAttribute("errorMessages", errorMessages);
 		session.removeAttribute("errorMessages");
 
+		request.setAttribute("start", start);
+		request.setAttribute("end", end);
 		request.setAttribute("isLoggedIn", isLoggedIn);
 		request.setAttribute("messages", messages);
 		request.setAttribute("comments", comments);

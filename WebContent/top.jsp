@@ -29,7 +29,7 @@
 		<div class="date-filter">
 			<form action="./" action="get">
 				<span>
-					日付　 <input type="date" name="start"/> ～ <input type="date" name="end"/>　<input type="submit" value="絞込"/>
+					日付　 <input type="date" name="start" value="${ start }"/> ～ <input type="date" name="end" value="${ end }"/>　<input type="submit" value="絞込"/>
 				</span>
 			</form>
 		</div>

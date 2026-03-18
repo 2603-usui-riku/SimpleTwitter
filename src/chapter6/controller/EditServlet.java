@@ -51,7 +51,8 @@ public class EditServlet extends HttpServlet {
 			message = new MessageService().select(msgId);
 		}
 
-		 if (message == null) {
+		// errorMessagesにエラーメッセージが入っていないかつ戻り値が存在していない場合にエラーメッセージを追加
+		 if (errorMessages.size() == 0 && message == null) {
 				errorMessages.add("不正なパラメータが入力されました");
 		}
 

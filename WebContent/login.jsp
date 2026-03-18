@@ -15,11 +15,13 @@
 <body>
 	<div class="main-contents">
 		<c:if test="${not empty errorMessages }">
-			<ul>
-				<c:forEach items="${errorMessages}" var="errorMessage">
-					<li><c:out value="${errorMessage}" />
-				</c:forEach>
-			</ul>
+			<div class="errorMessages">
+				<ul>
+					<c:forEach items="${errorMessages}" var="errorMessage">
+						<li><c:out value="${errorMessage}" />
+					</c:forEach>
+				</ul>
+			</div>
 		</c:if>
 
 		<form action="login" method="post">
