@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import chapter6.beans.User;
+import chapter6.beans.UserComment;
 import chapter6.beans.UserMessage;
 import chapter6.logging.InitApplication;
+import chapter6.service.CommentService;
 import chapter6.service.MessageService;
 
 @WebServlet(urlPatterns = { "/index.jsp" })
@@ -32,7 +34,6 @@ public class TopServlet extends HttpServlet {
 	public TopServlet() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
-
 	}
 
 	@Override
@@ -46,10 +47,10 @@ public class TopServlet extends HttpServlet {
 		@SuppressWarnings("unchecked")
 		List<String> errorMessages = (List<String>) session.getAttribute("errorMessages");
 
-		boolean isShowMessageForm = false;
+		boolean isLoggedIn = false;
 		User user = (User) request.getSession().getAttribute("loginUser");
 		if (user != null) {
-			isShowMessageForm = true;
+			isLoggedIn = true;
 		}
 
 		/*
@@ -59,12 +60,14 @@ public class TopServlet extends HttpServlet {
 		 */
 		String userId = request.getParameter("user_id");
 		List<UserMessage> messages = new MessageService().select(userId, user);
+		List<UserComment> comments = new CommentService().select();
 
 		request.setAttribute("errorMessages", errorMessages);
 		session.removeAttribute("errorMessages");
 
-		request.setAttribute("isShowMessageForm", isShowMessageForm);
+		request.setAttribute("isLoggedIn", isLoggedIn);
 		request.setAttribute("messages", messages);
+		request.setAttribute("comments", comments);
 		request.setAttribute("errorMessages", errorMessages);
 		request.getRequestDispatcher("/top.jsp").forward(request, response);
 	}

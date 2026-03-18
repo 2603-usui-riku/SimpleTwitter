@@ -34,8 +34,7 @@
 					</h2>
 				</div>
 				<div class="account">
-					@
-					<c:out value="${ loginUser.account }" />
+					@<c:out value="${ loginUser.account }" />
 				</div>
 				<div class="description">
 					<c:out value="${ loginUser.description }" />
@@ -55,7 +54,7 @@
 		</c:if>
 
 		<div class="form-area">
-			<c:if test="${ isShowMessageForm }">
+			<c:if test="${ isLoggedIn }">
 				<form action="message" method="post">
 					いま、どうしてる？<br />
 					<textarea name="text" cols="100" rows="5" class="tweet-box"></textarea>
@@ -68,10 +67,11 @@
 			<c:forEach items="${ messages }" var="message">
 				<div class="message">
 					<div class="account-name">
-						<span class="account"> <a
-							href="./?user_id=<c:out value="${ message.userId }"/>"> <c:out
-									value="${ message.account }" /></a>
-						</span> <span class="name"><c:out value="${ message.name }" /></span>
+						<a href="./?user_id=<c:out value="${ message.userId }"/>">
+							<span class="account"><c:out value="${ message.account }" /></span>
+						</a>
+
+						<span class="name"><c:out value="${ message.name }" /></span>
 					</div>
 
 					<div class="text">
@@ -86,16 +86,45 @@
 					<c:if test="${ message.editable }">
 						<div class="btns">
 							<form action="edit" method="get">
-								<input type="hidden" name="message_id" value="${ message.id }" />
+								<input type="hidden" name="messageId" value="${ message.id }" />
 								<button class="edit-btn" type="submit">編集</button>
 							</form>
-							<%--
-							<button class="edit-btn" onclick="location.href='./edit?message_id=${ message.id }'">編集</button>
-							--%>
 
 							<form action="deleteMessage" method="post">
-								<input type="hidden" name="message_id" value="${ message.id }" />
+								<input type="hidden" name="messageId" value="${ message.id }" />
 								<button class="delete-btn" type="submit">削除</button>
+							</form>
+						</div>
+					</c:if>
+
+					<c:if test="${ isLoggedIn }">
+						<div class="comments">
+							<div class="comment-title">返信</div>
+							<c:if test="${ not empty comments }">
+								<c:forEach items="${ comments }" var="comment">
+									<c:if test="${ message.id == comment.messageId }">
+										<div class="comment">
+											<div class="account-name">
+												<span class="account"><c:out value="${ comment.account }" /></span>
+												<span class="name"><c:out value="${ comment.name }" /></span>
+											</div>
+
+											<div class="text">
+												<pre><c:out value="${ comment.text }" /></pre>
+											</div>
+
+											<div class="date">
+												<fmt:formatDate value="${ comment.createdDate }" pattern="yyyy/MM/dd HH:mm:ss" />
+											</div>
+										</div>
+									</c:if>
+								</c:forEach>
+							</c:if>
+
+							<form action="comment" method="post">
+								<input type="hidden" name="messageId" value="${ message.id }" />
+								<textarea name="text" cols="50" rows="5" class="comment-box"></textarea>
+								<br /> <input type="submit" value="返信">
 							</form>
 						</div>
 					</c:if>

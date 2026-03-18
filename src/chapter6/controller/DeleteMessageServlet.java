@@ -37,7 +37,7 @@ public class DeleteMessageServlet extends HttpServlet {
 		}.getClass().getEnclosingMethod().getName());
 
 		try {
-			int msgId = Integer.parseInt(request.getParameter("message_id"));
+			int msgId = Integer.parseInt(request.getParameter("messageId"));
 			new MessageService().delete(msgId);
 		} catch (NoRowsUpdatedRuntimeException e) {
 			log.warning("他の人によって更新されています。最新のデータを表示しました。データを確認してください。");

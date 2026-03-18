@@ -27,7 +27,6 @@ public class UserService {
 	public UserService() {
 		InitApplication application = InitApplication.getInstance();
 		application.init();
-
 	}
 
 	public void insert(User user) {
